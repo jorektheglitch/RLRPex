@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 @package RoutingManager
 Created on Jan 26, 2017

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 @package DataHandler
 Created on Oct 6, 2014

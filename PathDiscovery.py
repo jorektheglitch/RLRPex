@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 @package PathDiscovery
 Created on Oct 8, 2014

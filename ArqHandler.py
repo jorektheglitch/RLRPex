@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 @package ArqHandler
 Created on Jun 8, 2016

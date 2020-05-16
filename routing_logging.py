@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 @package routing_logging
 Created on Aug 1, 2016

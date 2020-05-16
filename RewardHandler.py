@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 @package RewardHandler
 Created on Aug 6, 2016
