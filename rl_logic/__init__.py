@@ -153,10 +153,10 @@ class ActionSelector:
             return greedy_action_id
         else:
             # Randomly choose some other action
-            chosen_action_id = random.choice(action_values.keys())
+            chosen_action_id = random.choice(list(action_values.keys()))
             # Check the the selected action is not the "greedy" choice
             while action_values[chosen_action_id] == greedy_action_id and len(action_values) != 1:
-                chosen_action_id = random.choice(action_values.keys())
+                chosen_action_id = random.choice(list(action_values.keys()))
             return chosen_action_id
 
     ## Select an action using "soft-max" algorithm, based on Gibbs (Boltzmann) distribution.
@@ -199,7 +199,7 @@ class ActionSelector:
             return choice()
 
         # Calculate weights for each action value
-        action_weights = calc_gibbs_boltzmann(action_values.values())
+        action_weights = calc_gibbs_boltzmann(list(action_values.values()))
         # Select an action
-        action = weighted_choice(dict(zip(action_values.keys(), action_weights)))
+        action = weighted_choice(dict(list(zip(list(action_values.keys()), action_weights))))
         return action

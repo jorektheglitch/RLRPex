@@ -13,7 +13,7 @@ It also performs all log writing operations in a single thread, while receiving 
 # Import necessary python modules from the standard library
 import os
 import threading
-import Queue
+import queue
 import logging
 from logging.handlers import RotatingFileHandler
 
@@ -28,7 +28,7 @@ ABSOLUTE_PATH = os.path.dirname(os.path.abspath(__file__))
 PATH_TO_LOGS = "/var/log/adhoc_routing/"
 ## @var LOG_QUEUE
 # Define a global queue for receiving the methods from the Logger objects and its arguments.
-LOG_QUEUE = Queue.Queue()
+LOG_QUEUE = queue.Queue()
 
 ## @var LOG_LEVEL
 # Set a global variable LOG_LEVEL according to the string variable in conf file.

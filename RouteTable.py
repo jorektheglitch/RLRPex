@@ -195,33 +195,33 @@ class Table:
     # @param self The object pointer.
     # @param return list() of entries.
     def get_list_of_entries(self):
-        current_keys = self.entries_list.keys()
-        current_values = self.entries_list.values()
+        current_keys = list(self.entries_list.keys())
+        current_values = list(self.entries_list.values())
 
         while len(current_keys) != len(current_values):
-            current_keys = self.entries_list.keys()
-            current_values = self.entries_list.values()
+            current_keys = list(self.entries_list.keys())
+            current_values = list(self.entries_list.values())
 
         # This is needed to simply a further (de-)serialization of this data structure. Otherwise, the list of
         # current_values would contain the custom Entry() objects, which are difficult to de-serialize on the other
         # side, without knowing their structure.
-        current_values = map(dict, current_values)
+        current_values = list(map(dict, current_values))
 
-        return dict(zip(current_keys, current_values))
+        return dict(list(zip(current_keys, current_values)))
 
     ## Safe-copy and return a list with L3 addresses of current neighbors.
     # @param self The object pointer.
     # @param return list() of L3 addresses.
     def get_neighbors_l3_addresses(self):
         # Make a safe-copy of the current list of neighbors
-        keys = self.neighbors_list.keys()
-        values = self.neighbors_list.values()
+        keys = list(self.neighbors_list.keys())
+        values = list(self.neighbors_list.values())
 
         while len(keys) != len(values):
-            keys = self.neighbors_list.keys()
-            values = self.neighbors_list.values()
+            keys = list(self.neighbors_list.keys())
+            values = list(self.neighbors_list.values())
 
-        neighbors_list = dict(zip(keys, values))
+        neighbors_list = dict(list(zip(keys, values)))
 
         # Create a list with L3 addresses of each neighbor in a format: [[addr1, ... addrN], ... [addr1, ... addrN]]
         addresses_list = []

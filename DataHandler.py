@@ -140,7 +140,7 @@ class GatewayHandler:
 
         else:
             # Check IPv4 address
-            parsed_address = map(int, dst_address.split("."))
+            parsed_address = list(map(int, dst_address.split(".")))
             # Check for the IPv4 private domain. See RFC 1918.
             if parsed_address[0] == 10:
                 return dst_address

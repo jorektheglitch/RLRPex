@@ -863,7 +863,7 @@ class HelloHeader:
                 ipv4_address = struct.unpack("!I", inet_aton(hello_message.ipv4_address))[0]
                 args.append(ipv4_address)
 
-            for i in xrange(hello_message.ipv6_count):
+            for i in range(hello_message.ipv6_count):
                 fields.append(("IPV6_ADDRESS_%s_1" % i, ctypes.c_uint32, 32))
                 fields.append(("IPV6_ADDRESS_%s_2" % i, ctypes.c_uint32, 32))
                 fields.append(("IPV6_ADDRESS_%s_3" % i, ctypes.c_uint32, 32))
@@ -911,7 +911,7 @@ class HelloHeader:
             if fixed_header_unpacked.IPV4_COUNT:
                 fields.append(("IPV4_ADDRESS", ctypes.c_uint32, 32))
 
-            for i in xrange(fixed_header_unpacked.IPV6_COUNT):
+            for i in range(fixed_header_unpacked.IPV6_COUNT):
                 fields.append(("IPV6_ADDRESS_%s_1" % i, ctypes.c_uint32, 32))
                 fields.append(("IPV6_ADDRESS_%s_2" % i, ctypes.c_uint32, 32))
                 fields.append(("IPV6_ADDRESS_%s_3" % i, ctypes.c_uint32, 32))
@@ -926,7 +926,7 @@ class HelloHeader:
             if header_unpacked.IPV4_COUNT:
                 message.ipv4_address = inet_ntoa(struct.pack("!I", header_unpacked.IPV4_ADDRESS))
 
-            for i in xrange(header_unpacked.IPV6_COUNT):
+            for i in range(header_unpacked.IPV6_COUNT):
                 # Merge the parts of 128-bit IPv6 address together
                 ipv6_left = (getattr(header_unpacked, "IPV6_ADDRESS_%s_1" % i) << 32 |
                              getattr(header_unpacked, "IPV6_ADDRESS_%s_2" % i))

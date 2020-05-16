@@ -133,7 +133,7 @@ def get_l3_addresses_from_interface():
     if GW_MODE:
         addresses.append(Messages.DEFAULT_ROUTE)
 
-    return filter(None, addresses)
+    return [_f for _f in addresses if _f]
 
 
 ## Ger L3 addresses from the data packet.
