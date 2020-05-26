@@ -93,7 +93,7 @@ def get_l3_addresses_from_interface():
     def get_ipv4_address():
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         try:
-            ipv4_addr = ioctl(s.fileno(), SIOCGIFADDR, struct.pack('256s', VIRT_IFACE_NAME[:15]))[20:24]
+            ipv4_addr = ioctl(s.fileno(), SIOCGIFADDR, struct.pack('256s', VIRT_IFACE_NAME[:15].encode()))[20:24]
         except IOError:
             # No IPv4 address was assigned"
             TRANSPORT_LOG.debug("No IPv4 address assigned!")
@@ -202,10 +202,10 @@ def get_l3_addresses_from_packet(packet):
 # @return (L4 protocol name), (source port number), (destination port number).
 def get_upper_proto_info(packet):
     def get_proto_id_from_ipv4(ipv4_packet):
-        return struct.unpack("!B", ipv4_packet[13])[0]
+        return struct.unpack("!B", ipv4_packet[13:14])[0]
 
     def get_proto_id_from_ipv6(ipv6_packet):
-        return struct.unpack("!B", ipv6_packet[10])[0]
+        return struct.unpack("!B", ipv6_packet[10:11])[0]
 
     # Gets "upper_data" - a sliced packet without L3 header - outputs a destination port number of UDP
     def get_dst_port_from_udp(udp_upper_data):
@@ -406,7 +406,7 @@ class VirtualTransport:
         # See the documentation: https://www.kernel.org/doc/Documentation/networking/tuntap.txt
         tun_mode = IFF_TUN
         f = os.open("/dev/net/tun", os.O_RDWR)
-        ioctl(f, TUNSETIFF, struct.pack("16sH", VIRT_IFACE_NAME, tun_mode))
+        ioctl(f, TUNSETIFF, struct.pack("16sH", VIRT_IFACE_NAME.encode(), tun_mode))
 
         self.set_mtu(VIRT_IFACE_NAME, 1400)      # !!! MTU value is fixed for now. !!!
         self.interface_up(VIRT_IFACE_NAME)
@@ -426,7 +426,7 @@ class VirtualTransport:
     # @return None
     def set_mtu(self, iface, mtu):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        ifreq = struct.pack('16sI', iface, int(mtu))
+        ifreq = struct.pack('16sI', iface.encode(), int(mtu))
         ioctl(sock, SIOCSIFMTU, ifreq)
         
     ## Up the interface.
@@ -435,7 +435,7 @@ class VirtualTransport:
     # @return None
     def interface_up(self, iface):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        ifreq = struct.pack('16sH', iface, IFF_UP)
+        ifreq = struct.pack('16sH', iface.encode(), IFF_UP)
         ioctl(sock, SIOCSIFFLAGS, ifreq)
 
     ## Send data packet to the application.
@@ -518,6 +518,7 @@ class RawTransport:
         eth_header = self.gen_eth_header(self.node_mac, dst_mac)
         # Pack the initial dsr_message object and get the dsr_binary_header from it
         dsr_bin_header = Messages.pack_message(dsr_message)
+        payload = b"".join(chr(b).encode() for b in payload)
         self.send_socket.send(eth_header + dsr_bin_header + payload)
 
     ## Generate ethernet header.
@@ -528,7 +529,8 @@ class RawTransport:
     def gen_eth_header(self, src_mac, dst_mac):
         src = [int(x, 16) for x in src_mac.split(":")]
         dst = [int(x, 16) for x in dst_mac.split(":")]
-        return b"".join(map(chr, dst + src + self.proto))
+        return b"".join(chr(b).encode() for b in dst+src+self.proto)
+        #return b"".join(map(chr, dst + src + self.proto))
 
     ## Receive frames with filtering.
     # Receive and return source mac, dsr_header and upper layer data from the interface, filter out the mac addresses,

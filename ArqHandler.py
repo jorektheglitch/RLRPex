@@ -63,7 +63,7 @@ class ArqHandler:
         for dst_address in dest_mac_list:
             ARQ_HANDLER_LOG.debug("ARQ_SEND for %s", dst_address)
             # Add an entry to msg_thread_map and create a ArqRoutine thread
-            hash_str = hashlib.md5(str(message.id) + dst_address).hexdigest()
+            hash_str = hashlib.md5(str(message.id).encode() + dst_address.encode()).hexdigest()
             # Convert hash_str from hex to 32-bit integer
             hash_int = int(hash_str, 16) & max_int32
 
@@ -85,7 +85,7 @@ class ArqHandler:
         for dst_address in dest_mac_list:
             ARQ_HANDLER_LOG.debug("ARQ_SEND for %s", dst_address)
             # Add an entry to msg_thread_map and create a ArqRoutine thread
-            hash_str = hashlib.md5(str(message.id) + dst_address).hexdigest()
+            hash_str = hashlib.md5(str(message.id).encode() + dst_address.encode()).hexdigest()
             # Convert hash_str from hex to 32-bit integer
             hash_int = int(hash_str, 16) & max_int32
 
@@ -122,7 +122,7 @@ class ArqHandler:
     def send_ack(self, message, dst_mac):
         ARQ_HANDLER_LOG.info("Sending ACK back on the message %s", str(message))
         # Generate hash from the given message id
-        hash_str = hashlib.md5(str(message.id) + self.raw_transport.node_mac).hexdigest()
+        hash_str = hashlib.md5(str(message.id).encode() + self.raw_transport.node_mac.encode()).hexdigest()
         # Convert hash_str from hex to 32-bit integer
         hash_int = int(hash_str, 16) & max_int32
         # Create ACK message object

@@ -60,7 +60,7 @@ class RewardWaitHandler:
     # @param mac MAC address of the node where the packet had been sent for getting the reward.
     # @return None
     def wait_for_reward(self, dst_ip, mac):
-        hash_str = hashlib.md5(dst_ip + mac).hexdigest()
+        hash_str = hashlib.md5(dst_ip.encode() + mac.encode()).hexdigest()
         # Convert hash_str from hex to 32-bit integer
         hash_value = int(hash_str, 16) & max_int32
 
@@ -131,7 +131,7 @@ class RewardWaitThread(threading.Thread):
             self.table.update_entry(self.dst_ip, self.mac, 0)
 
         # Finally, finish and delete the thread
-        hash_str = hashlib.md5(self.dst_ip + self.mac).hexdigest()
+        hash_str = hashlib.md5(self.dst_ip.encode() + self.mac.encode()).hexdigest()
         # Convert hash_str from hex to 32-bit integer
         hash_value = int(hash_str, 16) & max_int32
 
@@ -189,7 +189,7 @@ class RewardSendHandler:
     # @param mac MAC address of the node where the packet had been sent for getting the reward.
     # @return None
     def send_reward(self, dst_ip, mac):
-        hash_str = hashlib.md5(dst_ip + mac).hexdigest()
+        hash_str = hashlib.md5(dst_ip.encode() + mac.encode()).hexdigest()
         # Convert hash_str from hex to 32-bit integer
         hash_value = int(hash_str, 16) & max_int32
 
@@ -215,7 +215,7 @@ class RewardSendHandler:
     def send_back(self, dst_ip, mac):
         # Calculate its own average value of the estimated reward towards the given dst_ip
         avg_value = self.table.get_avg_value(dst_ip)
-        hash_str = hashlib.md5(dst_ip + self.node_mac).hexdigest()
+        hash_str = hashlib.md5(dst_ip.encode() + self.node_mac.encode()).hexdigest()
         hash_value = int(hash_str, 16) & max_int32
         # Generate and send the reward back
         dsr_reward_message = Messages.RewardMessage(avg_value, hash_value)
