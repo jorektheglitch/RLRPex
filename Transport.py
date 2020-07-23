@@ -518,7 +518,6 @@ class RawTransport:
         eth_header = self.gen_eth_header(self.node_mac, dst_mac)
         # Pack the initial dsr_message object and get the dsr_binary_header from it
         dsr_bin_header = Messages.pack_message(dsr_message)
-        payload = b"".join(chr(b).encode() for b in payload)
         self.send_socket.send(eth_header + dsr_bin_header + payload)
 
     ## Generate ethernet header.
@@ -529,7 +528,7 @@ class RawTransport:
     def gen_eth_header(self, src_mac, dst_mac):
         src = [int(x, 16) for x in src_mac.split(":")]
         dst = [int(x, 16) for x in dst_mac.split(":")]
-        return b"".join(chr(b).encode() for b in dst+src+self.proto)
+        return bytes(dst+src+self.proto)
         #return b"".join(map(chr, dst + src + self.proto))
 
     ## Receive frames with filtering.

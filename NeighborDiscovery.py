@@ -186,7 +186,7 @@ class AdvertiseNeighbor(threading.Thread):
 
         NEIGHBOR_LOG.debug("Sending HELLO message:\n %s", self.message)
 
-        self.raw_transport.send_raw_frame(self.broadcast_mac, self.message, "")
+        self.raw_transport.send_raw_frame(self.broadcast_mac, self.message, b"")
         self.message.tx_count += 1
         # Update the current list of ips
         self.current_node_ips = node_ips

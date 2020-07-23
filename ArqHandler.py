@@ -129,7 +129,7 @@ class ArqHandler:
         ack_message = Messages.AckMessage()
         ack_message.msg_hash = hash_int
         # Send the message
-        self.raw_transport.send_raw_frame(dst_mac, ack_message, "")
+        self.raw_transport.send_raw_frame(dst_mac, ack_message, b"")
 
 
 ## A routine ARQ thread class which is responsible for sending the given message/data periodically in a timeout

@@ -220,4 +220,4 @@ class RewardSendHandler:
         # Generate and send the reward back
         dsr_reward_message = Messages.RewardMessage(avg_value, hash_value)
         # Send it back to the node which has sent the packet
-        self.raw_transport.send_raw_frame(mac, dsr_reward_message, "")
+        self.raw_transport.send_raw_frame(mac, dsr_reward_message, b"")
